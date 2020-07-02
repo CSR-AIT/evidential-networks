@@ -1,0 +1,186 @@
+{"variables": [
+   {"name": "SWM",
+      "object": "SC",
+      "states": [0,1],
+      "type": "sensor",
+      "description": "Software Scheduler at Control / Software Center (SC)"},
+   {"name": "SWU",
+      "object": "SC",
+      "states": [0,1],
+      "type": "sensormapping",
+      "description": "Software Update of BEMS nodes"},
+   {"name": "BSC1",
+      "object": "SSN",
+      "states": [0,1,2],
+      "type": "object",
+      "description": "BEMS status (collective from B15 and B16)"},
+   {"name": "BSC2",
+      "object": "SSN",
+      "states": [0,1,2],
+      "type": "object",
+      "description": "BEMS status (collective from B17 and B18)"},
+   {"name": "BSC",
+      "object": "SSN",
+      "states": [0,1,2],
+      "type": "object",
+      "description": "BEMS status (collective)"},
+   {"name": "CTRL",
+      "object": "SSN",
+      "states": [0,1,2],
+      "type": "object",
+      "description": "What is the state of our control node: 0 - Normal, 1 - Erroneous, 2 - Malicious"},
+   {"name": "RS",
+      "object": "SSN",
+      "states": [0,1,2],
+      "type": "object",
+      "description": "Rollout state at control centre (CC): 0 - Normal, 1 - Erroneous, 2 - Malicious"}
+  ],
+"sensorMappings": [
+   {"implyingDomain": ["SWM@SC"],
+      "impliedDomain": ["SWU@SC"],
+      "rules": [
+         {"implying": [[0]],
+          "implied": [[0]],
+          "values": ["probable", 1]},
+         {"implying": [[1]],
+          "implied": [[1]],
+          "values": ["probable", 1]}]
+   }
+],
+"relationRuleNodes": [
+   [
+      {"implyingDomain": ["BS@R11"],
+         "impliedDomain": ["CTRL@SSN"],
+         "rules": [
+            {"implying": [[1]],
+               "implied": [[1]],
+               "values": ["verylikely", 1]},
+            {"implying": [[1]],
+               "implied": [[2]],
+               "values": ["possible", 1]},
+            {"implying": [[2]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]},
+            {"implying": [[0]],
+               "implied": [[0]],
+               "values": ["likely", 1]}]
+      },
+      {"implyingDomain": ["BSC1@SSN"],
+         "impliedDomain": ["CTRL@SSN"],
+         "rules": [
+            {"implying": [[1]],
+               "implied": [[1]],
+               "values": ["verylikely", 1]},
+            {"implying": [[1]],
+               "implied": [[2]],
+               "values": ["possible", 1]},
+            {"implying": [[2]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]},
+            {"implying": [[0]],
+               "implied": [[0]],
+               "values": ["likely", 1]}]
+      },
+      {"implyingDomain": ["BSC2@SSN"],
+         "impliedDomain": ["CTRL@SSN"],
+         "rules": [
+            {"implying": [[1]],
+               "implied": [[1]],
+               "values": ["verylikely", 1]},
+            {"implying": [[2]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]},
+            {"implying": [[1]],
+               "implied": [[2]],
+               "values": ["possible", 1]},
+            {"implying": [[0]],
+               "implied": [[0]],
+               "values": ["likely", 1]}]
+      }      
+   ],
+   [
+      {"implyingDomain": ["BS@R15"],
+         "impliedDomain": ["BSC1@SSN"],
+         "rules": [
+            {"implying": [[1]],
+               "implied": [[1]],
+               "values": ["probable", 1]},
+            {"implying": [[2]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]},
+            {"implying": [[0]],
+               "implied": [[0]],
+               "values": ["likely", 1]}]
+      },
+      {"implyingDomain": ["BS@R16"],
+         "impliedDomain": ["BSC1@SSN"],
+         "rules": [
+            {"implying": [[1]],
+               "implied": [[1]],
+               "values": ["probable", 1]},
+            {"implying": [[2]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]},
+            {"implying": [[0]],
+               "implied": [[0]],
+               "values": ["likely", 1]}]
+      }
+   ],
+   [
+      {"implyingDomain": ["BS@R17"],
+         "impliedDomain": ["BSC2@SSN"],
+         "rules": [
+            {"implying": [[1]],
+               "implied": [[1]],
+               "values": ["probable", 1]},
+            {"implying": [[2]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]},
+            {"implying": [[0]],
+               "implied": [[0]],
+               "values": ["likely", 1]}]
+      },
+      {"implyingDomain": ["BS@R18"],
+         "impliedDomain": ["BSC2@SSN"],
+         "rules": [
+            {"implying": [[1]],
+               "implied": [[1]],
+               "values": ["probable", 1]},
+            {"implying": [[2]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]},
+            {"implying": [[0]],
+               "implied": [[0]],
+               "values": ["likely", 1]}]
+      }
+   ],
+   [
+      {"implyingDomain": ["CTRL@SSN"],
+         "impliedDomain": ["RS@SSN"],
+         "rules": [
+            {"implying": [[1]],
+               "implied": [[1]],
+               "values": ["verylikely", 1]},
+            {"implying": [[2]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]},
+            {"implying": [[0]],
+               "implied": [[0]],
+               "values": ["verylikely", 1]}]
+      },
+      {"implyingDomain": ["CTRL@SSN", "SWU@SC"],
+         "impliedDomain": ["RS@SSN"],
+         "rules": [
+            {"implying": [[0,1],[0]],
+               "implied": [[0]],
+               "values": ["possible", 1]},
+            {"implying": [[1],[1]],
+               "implied": [[1]],
+               "values": ["verylikely", 1]},
+            {"implying": [[2],[1]],
+               "implied": [[2]],
+               "values": ["verylikely", 1]}]
+      }
+   ]   
+]
+}

@@ -1,0 +1,114 @@
+{"variables": [
+    {"name": "AD",
+     "states": [0,1],
+     "type": "sensor",
+     "description": "Voltage Anomaly Detection at BEMS"},
+     {"name": "AV",
+     "states": [0,1],
+     "type": "sensor",
+     "description": "Antivirus at BEMS"},
+    {"name": "SWM",
+        "states": [0,1],
+        "type": "sensor",
+        "description": "Software Manager at BEMS"},  
+    {"name": "MW",
+     "states": [0,1],
+     "type": "sensormapping",
+     "description": "Malware detected"},      
+    {"name": "VA",
+        "states": [0,1],
+        "type": "sensormapping",
+        "description": "Voltage anomaly detected"},
+    {"name": "SWU",
+        "states": [0,1],
+        "type": "sensormapping",
+        "description": "Software being updated / installed at BEMS"}, 
+    {"name": "BS",
+     "states": [0,1,2],
+     "type": "object",
+     "description": "BEMS status {0 - Normal, 1 - Erroneous, 2 - Malicious}"}],
+"sensorMappings": [
+    {"implyingDomain": ["AV"],
+     "impliedDomain": ["MW"],
+     "rules": [
+        {"implying": [[0]],
+         "implied": [[0]],
+         "values": [0.92, 1]},
+        {"implying": [[1]],
+         "implied": [[1]],
+         "values": [1, 1]}]
+     },
+     {"implyingDomain": ["AD"],
+     "impliedDomain": ["VA"],
+     "rules": [
+        {"implying": [[0]],
+         "implied": [[0]],
+         "values": ["verylikely", 1]},
+        {"implying": [[1]],
+         "implied": [[1]],
+         "values": ["probable", 1]}]
+     },
+     {"implyingDomain": ["SWM"],
+        "impliedDomain": ["SWU"],
+        "rules": [
+           {"implying": [[0]],
+            "implied": [[0]],
+            "values": [1, 1]},
+           {"implying": [[1]],
+            "implied": [[1]],
+            "values": [1, 1]}]
+    }
+    ],
+    "relationRuleNodes": [
+        [
+            {"implyingDomain": ["MW"],
+                "impliedDomain": ["BS"],
+                "rules": [
+                   {"implying": [[1]],
+                    "implied": [[2]],
+                    "values": ["probable", 1]},
+                   {"implying": [[0]],
+                    "implied": [[0]],
+                    "values": ["verylikely", 1]}]
+            },
+            {"implyingDomain": ["VA"],
+             "impliedDomain": ["BS"],
+             "rules": [
+                {"implying": [[1]],
+                 "implied": [[1]],
+                 "values": ["probable", 1]}, 
+                {"implying": [[1]],
+                 "implied": [[2]],
+                 "values": ["possible", 1]}, 
+                {"implying": [[0]],
+                 "implied": [[0]],
+                 "values": ["verylikely", 1]}]
+            },
+            {"implyingDomain": ["VA", "SWU"],
+                "impliedDomain": ["BS"],
+                "rules": [
+                {"implying": [[1], [1]],
+                    "implied": [[0]],
+                    "values": ["likely", 1]},
+                {"implying": [[0], [0]],
+                    "implied": [[0]],
+                    "values": ["probable", 1]},
+                {"implying": [[1], [0]],
+                    "implied": [[1]],
+                    "values": ["verylikely", 1]}
+                ]
+            },
+            {"implyingDomain": ["MW", "VA"],
+             "impliedDomain": ["BS"],
+             "rules": [
+                {"implying": [[1], [1]],
+                 "implied": [[2]],
+                 "values": ["probable", 1]},
+                 {"implying": [[0], [1]],
+                    "implied": [[1]],
+                    "values": ["probable", 1]}
+              ]
+            }      
+        ]
+    ]
+}
